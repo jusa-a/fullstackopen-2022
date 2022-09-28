@@ -38,15 +38,27 @@ const App = () => {
             number: newNumber,
         }
 
-        personService.create(personObject).then((returnedPerson) => {
-            setPersons(persons.concat(returnedPerson))
-            setNewName('')
-            setNewNumber('')
-            setNotification({ message: `Added ${returnedPerson.name}` })
-            setTimeout(() => {
-                setNotification({})
-            }, 3000)
-        })
+        personService
+            .create(personObject)
+            .then((returnedPerson) => {
+                setPersons(persons.concat(returnedPerson))
+                setNewName('')
+                setNewNumber('')
+                setNotification({ message: `Added ${returnedPerson.name}` })
+                setTimeout(() => {
+                    setNotification({})
+                }, 3000)
+            })
+            .catch((error) => {
+                console.log(error.response.data.error)
+                setNotification({
+                    message: error.response.data.error,
+                    type: 'error',
+                })
+                setTimeout(() => {
+                    setNotification({})
+                }, 3000)
+            })
     }
 
     const changeNumber = () => {
